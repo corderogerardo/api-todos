@@ -1,0 +1,25 @@
+{
+  "name": "api-todos",
+  "version": "1.0.0",
+  "description": "NodeJS, Express, Mongoose Todos REST APIs.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/corderogerardo/api-todos.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/corderogerardo/api-todos/issues"
+  },
+  "homepage": "https://github.com/corderogerardo/api-todos#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "mongodb": "^3.0.1",
+    "mongoose": "^4.13.9"
+  }
+}
