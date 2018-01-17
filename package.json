@@ -4,8 +4,12 @@
   "description": "NodeJS, Express, Mongoose Todos REST APIs.",
   "main": "index.js",
   "scripts": {
+    "start":"node server/server.js",
     "test": "mocha server/**/*.test.js",
     "test-watch":"nodemon --exec 'npm test'e.g. the bot, API integrations, data admin, dev ops, AI/Machine Learning"
+  },
+  "engines":{
+    "node": "9.4.0"
   },
   "repository": {
     "type": "git",
