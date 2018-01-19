@@ -1,8 +1,9 @@
+require('./config/config');
 // Third party modules
 const _ = require('lodash');
 let express = require('express');
 let bodyParser = require('body-parser');
-let {ObjectID} = require('mongodb');
+let { ObjectID } = require('mongodb');
 
 // My modules exported
 let { mongoose } = require('./db/mongoose');
@@ -11,7 +12,7 @@ let { User } = require('./models/user');
 
 // Express REST API Server Instance
 let app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 // Use Middleware to allow express read and send json data, body parser wraps express.
 app.use(bodyParser.json());
@@ -37,20 +38,20 @@ app.get('/todos', (req, res) => {
     })
 });
 
-app.get('/todos/:id',(req,res)=>{
+app.get('/todos/:id', (req, res) => {
     let id = req.params.id;
 
-    if(!ObjectID.isValid(id)){
+    if (!ObjectID.isValid(id)) {
         return res.status(404).send();
     }
 
-    Todo.findById(id).then((todo)=>{
-        if(!todo){
+    Todo.findById(id).then((todo) => {
+        if (!todo) {
             return res.status(404).send();
         }
 
-        res.send({todo});
-    }).catch((e)=>{
+        res.send({ todo });
+    }).catch((e) => {
         res.status(400).send();
     })
 });
@@ -58,42 +59,42 @@ app.get('/todos/:id',(req,res)=>{
 app.delete('/todos/:id', (req, res) => {
     let id = req.params.id;
 
-    if(!ObjectID.isValid(id)){
+    if (!ObjectID.isValid(id)) {
         return res.status(404).send();
     }
 
-    Todo.findByIdAndRemove(id).then((todo)=>{
-        if(!todo){
+    Todo.findByIdAndRemove(id).then((todo) => {
+        if (!todo) {
             return res.status(404).send();
         }
-        res.send({todo});
-    }).catch((e)=>{
+        res.send({ todo });
+    }).catch((e) => {
         res.status(400).send();
     })
 
 });
 
-app.patch('/todos/:id', (req, res) =>{
+app.patch('/todos/:id', (req, res) => {
     let id = req.params.id;
-    let body = _.pick(req.body,['text','completed']);
+    let body = _.pick(req.body, ['text', 'completed']);
 
-    if(!ObjectID.isValid(id)){
+    if (!ObjectID.isValid(id)) {
         return res.status(404).send();
     }
 
-    if(_.isBoolean(body.completed) && body.completed){
+    if (_.isBoolean(body.completed) && body.completed) {
         body.completedAt = new Date().getTime();
-    }else{
+    } else {
         body.completed = false;
         body.completedAt = null;
     }
 
-    Todo.findByIdAndUpdate(id, {$set:body},{new:true}).then((todo)=>{
-        if(!todo){
+    Todo.findByIdAndUpdate(id, { $set: body }, { new: true }).then((todo) => {
+        if (!todo) {
             return res.status(404).send();
         }
-        res.send({todo});
-    }).catch((e)=>{
+        res.send({ todo });
+    }).catch((e) => {
         res.status(400).send();
     });
 

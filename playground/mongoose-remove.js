@@ -1,19 +1,19 @@
-const {ObjectID} = require('mongodb');
+const { ObjectID } = require('mongodb');
 
-const {mongoose} = requiere('./../server/db/mongoose');
+const { mongoose } = requiere('./../server/db/mongoose');
 
-const {Todo} = require('./../server/models/todo');
-const {User} = require('./../server/models/user');
+const { Todo } = require('./../server/models/todo');
+const { User } = require('./../server/models/user');
 
-Todo.remove({}).then((result)=> {
+Todo.remove({}).then((result) => {
     console.log(result);
 });
 
 //Todo.findOneAndRemove
-Todo.findOneAndRemove({_id:''}).then((todo)=>{
+Todo.findOneAndRemove({ _id: '' }).then((todo) => {
 
 });
 //Todo.findByIdAndRemove
-Todo.findByIdAndRemove('').then((todo)=>{
+Todo.findByIdAndRemove('').then((todo) => {
     console.log(todo)
 });
