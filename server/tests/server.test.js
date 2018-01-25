@@ -10,7 +10,9 @@ const todos = [{
     text: 'first test todo'
 }, {
     _id: new ObjectID(),
-    text: 'Second test todo'
+    text: 'Second test todo',
+    completed: true,
+    completedAt: 333
 }
 ];
 
@@ -36,7 +38,7 @@ describe('POST /todos', () => {
                     return done(err);
                 }
 
-                Todo.find({ text }).then((todos) => {
+               Todo.find({ text }).then((todos) => {
                     expect(todos.length).toBe(1);
                     expect(todos[0].text).toBe(text);
                     done();
