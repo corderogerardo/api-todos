@@ -1,10 +1,10 @@
 require('./config/config');
-// TODO-do: MongoDB Start Windows C:\Program Files\MongoDB\Server\3.6\bin\mongod.exe
+// TODO-do: MongoDB Start Windows "C:\Program Files\MongoDB\Server\3.6\bin\mongod.exe"
 // Third party modules
 const _ = require('lodash');
-let express = require('express');
-let bodyParser = require('body-parser');
-let { ObjectID } = require('mongodb');
+const express = require('express');
+const bodyParser = require('body-parser');
+const { ObjectID } = require('mongodb');
 
 // My modules exported
 let { mongoose } = require('./db/mongoose');
@@ -106,8 +106,10 @@ app.post('/users', (req, res) => {
     let body = _.pick(req.body, ['email', 'password']);
     let user = new User(body);
 
-    user.save().then((user) => {
-        res.send(user);
+    user.save().then(() => {
+        return user.generateAuthToken();
+    }).then((token) => {
+        res.header('x-auth', token).send(user);
     }).catch((e) => {
         res.status(400).send(e);
     })
