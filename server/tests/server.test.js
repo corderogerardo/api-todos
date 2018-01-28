@@ -4,23 +4,11 @@ const { ObjectID } = require('mongodb');
 
 const { app } = require('./../server');
 const { Todo } = require('./../models/todo');
+const { todos, populateTodos, users, populateUsers } = require('./seed/seed');
 
-const todos = [{
-    _id: new ObjectID(),
-    text: 'first test todo'
-}, {
-    _id: new ObjectID(),
-    text: 'Second test todo',
-    completed: true,
-    completedAt: 333
-}
-];
 
-beforeEach((done) => {
-    Todo.remove({}).then(() => {
-        return Todo.insertMany(todos);
-    }).then(() => done());
-});
+beforeEach(populateUsers);
+beforeEach(populateTodos);
 
 describe('POST /todos', () => {
     it('should create a new todo', (done) => {
@@ -38,7 +26,7 @@ describe('POST /todos', () => {
                     return done(err);
                 }
 
-               Todo.find({ text }).then((todos) => {
+                Todo.find({ text }).then((todos) => {
                     expect(todos.length).toBe(1);
                     expect(todos[0].text).toBe(text);
                     done();
