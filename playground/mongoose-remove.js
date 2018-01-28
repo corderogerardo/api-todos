@@ -13,6 +13,7 @@ Todo.remove({}).then((result) => {
 Todo.findOneAndRemove({ _id: '' }).then((todo) => {
 
 });
+
 //Todo.findByIdAndRemove
 Todo.findByIdAndRemove('').then((todo) => {
     console.log(todo)
