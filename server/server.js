@@ -6,6 +6,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { ObjectID } = require('mongodb');
 
+// Client ID Google+ Oauth nof-test :
+// Client secret :
+
 // My modules exported
 let { mongoose } = require('./db/mongoose');
 let { Todo } = require('./models/todo');
