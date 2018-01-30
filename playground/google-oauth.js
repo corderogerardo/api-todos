@@ -14,7 +14,6 @@ passport.use(new GoogleStrategy({
         console.log('Access Token ', accessToken);
         console.log('Refresh Token ', refreshToken);
         console.log('Profile ', profile);
-        done();
     }
 ));
 
@@ -22,8 +21,10 @@ app.get('/auth/google', passport.authenticate('google', {
     scope: ['profile', 'email']
 }));
 
+app.get('/auth/google/callback', passport.authenticate('google'));
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log(`Started on port ${port}`);
+    console.log(`Started on port ${PORT}`);
 });
