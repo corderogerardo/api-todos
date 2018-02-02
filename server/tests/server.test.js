@@ -206,8 +206,8 @@ describe('POST /users', () => {
             .send({ email, password })
             .expect(200)
             .expect((res) => {
-                expect(typeof (res.headers['x-auth'])).toBe('string');
-                expect(typeof (res.body._id)).toBe('string');
+                expect(res.headers['x-auth']).toBeTruthy();
+                expect(res.body._id).toBeTruthy();
                 expect(res.body.email).toBe(email);
             })
             .end((err) => {
@@ -216,10 +216,10 @@ describe('POST /users', () => {
                 }
 
                 User.findOne({ email }).then((user) => {
-                    expect(typeof (user)).toBe('object');
-                    expect(user.password).toNotBe(password);
+                    expect(user).toBeTruthy();
+                    expect(user.password).not.toBe(password);
                     done();
-                });
+                }).catch((e) => done(e));
             });
     });
     it('should return validation errors if request invalid', (done) => {
@@ -249,20 +249,20 @@ describe('POST /users/login', () => {
         request(app)
             .post('/users/login')
             .send({
-                email: users[1].email,
-                password: users[1].password
+                email: users[0].email,
+                password: users[0].password
             })
             .expect(200)
             .expect((res) => {
-                expect(res.headers['x-auth']).toExist();
+                expect(res.headers['x-auth']).toBeTruthy();
             })
             .end((err, res) => {
                 if (err) {
                     return done(err);
                 }
 
-                User.findById(users[1]._id).then((user) => {
-                    expect(user.tokens[0]).toInclude({
+                User.findById(users[0]._id).then((user) => {
+                    expect(user.toObject().tokens[1]).toMatchObject({
                         access: 'auth',
                         token: res.headers['x-auth']
                     });
@@ -279,6 +279,9 @@ describe('POST /users/login', () => {
             })
             .expect(400)
             .expect((res) => {
+                expect(res.headers['x-auth']).toBeFalsy();
+            })
+            .end((err, res) => {
                 if (err) {
                     return done(err);
                 }
@@ -291,3 +294,21 @@ describe('POST /users/login', () => {
     });
 });
 
+describe('DELETE /users/me/token', () => {
+    it('should remove auth token on logout', (done) => {
+        request(app)
+            .delete('/users/me/token')
+            .set('x-auth', users[0].tokens[0].token)
+            .expect(200)
+            .end((err, res) => {
+                if (err) {
+                    return done(err);
+                }
+
+                User.findById(users[0]._id).then((user) => {
+                    expect(user.tokens.length).toBe(0);
+                    done();
+                }).catch((e) => done(e));
+            });
+    });
+});
